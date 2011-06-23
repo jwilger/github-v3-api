@@ -1,0 +1,2 @@
+rvm use ree-1.8.7-2011.03@github-v3-api --create --install
+bundle check
