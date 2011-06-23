@@ -1,16 +1,24 @@
 = github-v3-api
 
-Description goes here.
+This library provides Ruby object access to the GitHub v3 API. It's being
+designed to play friendly with web apps that use OAuth2 via GitHub and need to
+access github repositories without needing to configure or store a specific
+user's GitHub credentials in the application itself.
 
 == Contributing to github-v3-api
  
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
+* Check out the latest master to make sure the feature hasn't been implemented
+  or the bug hasn't been fixed yet
+* Check out the issue tracker to make sure someone already hasn't requested it
+  and/or contributed it
 * Fork the project
 * Start a feature/bugfix branch
 * Commit and push until you are happy with your contribution
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+* Make sure to add tests for it. This is important so I don't break it in a
+  future version unintentionally.
+* Please try not to mess with the Rakefile, version, or history. If you want to
+  have your own version, or is otherwise necessary, that is fine, but please
+  isolate to its own commit so I can cherry-pick around it.
 
 == Copyright
 
