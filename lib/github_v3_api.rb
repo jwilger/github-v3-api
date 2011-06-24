@@ -1,7 +1,10 @@
 require 'rest-client'
 require 'json'
+require 'github_v3_api/entity'
 require 'github_v3_api/orgs_api'
 require 'github_v3_api/org'
+require 'github_v3_api/repos_api'
+require 'github_v3_api/repo'
 
 # This is the main entry-point to the GitHub v3 API.
 #
@@ -28,6 +31,14 @@ class GitHubV3API
   # associated with this instance.
   def orgs
     OrgsAPI.new(self)
+  end
+
+  # Entry-point for access to the GitHub Repos API
+  #
+  # Returns an instance of GitHubV3API::ReposAPI that will use the access_token
+  # associated with this instance.
+  def repos
+    ReposAPI.new(self)
   end
 
   def get(path) #:nodoc:
