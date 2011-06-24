@@ -46,3 +46,5 @@ pkg
 
 # For rubinius:
 #*.rbc
+
+get_access_token_sinatra_app.rb
