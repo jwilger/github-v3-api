@@ -1,31 +1,32 @@
 = github-v3-api
 
-This library provides Ruby object access to the GitHub v3 API. It's being
-designed to play friendly with web apps that use OAuth2 via GitHub and need to
-access github repositories without needing to configure or store a specific
-user's GitHub credentials in the application itself.
+This library provides Ruby object access to the GitHub v3 API. It's designed to
+play friendly with web apps that use OAuth2 via GitHub and need to access github
+repositories without needing to configure or store a specific user's GitHub
+credentials in the application itself.
 
 == CLI Testing
 
 Because this library requires an OAuth2 access token from GitHub, you will need
 to obtain such a token in order to do command-line testing of the library via
 IRB. To that end, a template sinatra application is included in the source at
-+get_access_token_sinatra_app.rb.template+. You will need to copy that file to
-+get_access_token_sinatra_app.rb+ (drop the .template) and replace YOUR_APP_ID
-and YOUR_APP_SECRET with the values for a GitHub application that you can create
-at https://github.com/account/applications/new (for the URL and Callback URL
-options, enter http://localhost:4567 and
+<tt>get_access_token_sinatra_app.rb.template</tt>. You will need to copy that
+file to <tt>get_access_token_sinatra_app.rb</tt> (drop the .template) and
+replace YOUR_APP_ID and YOUR_APP_SECRET with the values for a GitHub application
+that you can create at https://github.com/account/applications/new (for the URL
+and Callback URL options, enter http://localhost:4567 and
 http://localhost:4567/auth/github/callback respectively.)
 
-Then just run +ruby get_access_token_sinatra_app.rb+ and point your web browser
-at http://localhost:4567 whereupon you will be prompted to authorize your app at
-GitHub. If you allow it, you will be presented with an access token that you can
-then copy and paste in where needed.
+Then just run <tt>ruby get_access_token_sinatra_app.rb</tt> and point your web
+browser at http://localhost:4567 whereupon you will be prompted to authorize
+your app at GitHub. If you allow it, you will be presented with an access token
+that you can then copy and paste in where needed.
 
-WARNING: Because getting Ruby's openssl library to verify certificates properly
-on OSX is such a pain, this script disables certificate verification. If someone
-knows of a good way to fix this in a way that doesn't require every user on OSX
-to have fits, please, please fix it and send me a pull request.
+*WARNING*:: Because getting Ruby's openssl library to verify certificates properly
+            on OSX is such a pain, this script disables certificate
+            verification. If someone knows of a good way to fix this in a way
+            that doesn't require every user on OSX to have fits, please, please
+            fix it and send me a pull request.
 
 == Contributing to github-v3-api
  
