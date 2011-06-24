@@ -1,4 +1,6 @@
 class GitHubV3API
+  # This is the base class used for value objects returned by the API. See
+  # descendent classes for more details.
   class Entity
     def self.new_with_all_data(api, data) #:nodoc:
       entity = allocate
@@ -6,6 +8,10 @@ class GitHubV3API
       entity
     end
 
+    # +api+:: an instance of the API class associated with the subclass of
+    #         Entity being instantiated.
+    # +data+:: a Hash with keys corresponding to the data fields for the
+    #          subclass of Entity being instantiated
     def initialize(api, data)
       @api = api
       @data = data
@@ -31,7 +37,8 @@ class GitHubV3API
 
     protected
 
-    def data #:nodoc:
+    # Provides access to the raw data hash for subclasses.
+    def data
       @data
     end
 

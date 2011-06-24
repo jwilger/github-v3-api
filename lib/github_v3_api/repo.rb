@@ -7,6 +7,8 @@ class GitHubV3API
       :name, :open_issues, :organization, :owner, :parent, :private, :pushed_at,
       :size, :source, :url, :watchers
 
+    private
+
     def natural_key
       [data['owner']['login'], data['name']]
     end

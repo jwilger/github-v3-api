@@ -8,6 +8,8 @@ class GitHubV3API
       :private_gists, :private_repos, :public_gists, :public_repos, :space,
       :total_private_repos, :type, :url
 
+    private 
+
     def natural_key
       [data['login']]
     end
