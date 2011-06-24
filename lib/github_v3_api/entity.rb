@@ -23,7 +23,9 @@ class GitHubV3API
     end
 
     def [](key) #:nodoc:
-      fetch_data unless @fetched
+      if @data[key].nil? && !@fetched
+        fetch_data
+      end
       @data[key]
     end
 
