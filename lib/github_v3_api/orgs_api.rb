@@ -12,7 +12,7 @@ class GitHubV3API
 
     def get(org_login)
       org_data = @connection.get("/orgs/#{org_login}")
-      GitHubV3API::Org.new(self, org_data)
+      GitHubV3API::Org.new_with_all_data(self, org_data)
     end
   end
 end

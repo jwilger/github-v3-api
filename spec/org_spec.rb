@@ -9,7 +9,7 @@ describe GitHubV3API::Org do
         private_gists private_repos public_gists public_repos space
         total_private_repos type url)
       fields.each do |f|
-        org = GitHubV3API::Org.new(stub('api'), f.to_s => 'foo')
+        org = GitHubV3API::Org.new_with_all_data(stub('api'), {f.to_s => 'foo'})
         org.methods.should include(f)
         org.send(f).should == 'foo'
       end
@@ -17,31 +17,22 @@ describe GitHubV3API::Org do
   end
 
   describe '#[]' do
-    context 'when there is a value for the key' do
-      it 'returns the value for the key' do
-        api = stub(GitHubV3API::OrgsAPI)
-        org = GitHubV3API::Org.new(api, 'login' => 'octocat')
-        org['login'].should == 'octocat'
-      end
+    it 'returns the org data for the specified key' do
+      api = mock(GitHubV3API::OrgsAPI)
+      api.should_receive(:get).with('github') \
+        .and_return(GitHubV3API::Org.new(api, 'login' => 'github', 'company' => 'GitHub'))
+      org = GitHubV3API::Org.new(api, 'login' => 'github')
+      org['company'].should == 'GitHub'
     end
 
-    context 'when there is not a value for the key' do
-      it 'should fetch the full data for the org' do
-        api = mock(GitHubV3API::OrgsAPI)
-        api.should_receive(:get).with('github') \
-          .and_return(GitHubV3API::Org.new(api, 'login' => 'github', 'company' => 'GitHub'))
-        org = GitHubV3API::Org.new(api, 'login' => 'github')
-        org['company'].should == 'GitHub'
-      end
-
-      it 'should only attempt to fetch the data once' do
-        api = mock(GitHubV3API::OrgsAPI)
-        api.should_receive(:get).once.with('github') \
-          .and_return(GitHubV3API::Org.new(api, 'login' => 'github', 'company' => 'GitHub'))
-        org = GitHubV3API::Org.new(api, 'login' => 'github')
-        org['foo'].should be_nil
-        org['foo'].should be_nil
-      end
+    it 'only fetches the data once' do
+      api = mock(GitHubV3API::OrgsAPI)
+      api.should_receive(:get).once.with('github') \
+        .and_return(GitHubV3API::Org.new(api, 'login' => 'github', 'company' => 'GitHub'))
+      org = GitHubV3API::Org.new(api, 'login' => 'github')
+      org['login'].should == 'github'
+      org['company'].should == 'GitHub'
+      org['foo'].should be_nil
     end
   end
 end

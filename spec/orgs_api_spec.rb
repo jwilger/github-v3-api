@@ -18,7 +18,7 @@ describe GitHubV3API::OrgsAPI do
       connection = mock(GitHubV3API)
       connection.should_receive(:get).with('/orgs/octocat').and_return(:org_hash)
       api = GitHubV3API::OrgsAPI.new(connection)
-      GitHubV3API::Org.should_receive(:new).with(api, :org_hash).and_return(:org)
+      GitHubV3API::Org.should_receive(:new_with_all_data).with(api, :org_hash).and_return(:org)
       api.get('octocat').should == :org
     end
   end

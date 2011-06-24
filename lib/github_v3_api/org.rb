@@ -1,22 +1,30 @@
 class GitHubV3API
   class Org
+    def self.new_with_all_data(api, org_data) #:nodoc:
+      org = self.allocate
+      org.initialize_fetched(api, org_data)
+      org
+    end
+
     def initialize(api, org_data)
       @api = api
       @org_data = org_data
     end
 
+    def initialize_fetched(api, org_data) #:nodoc:
+      initialize(api, org_data)
+      @fetched = true
+    end
+
     def [](key) #:nodoc:
-      
-      if @org_data[key].nil? && !@fetched
-        fetch_data
-      end
+      fetch_data unless @fetched
       @org_data[key]
     end
 
     def self.attr_reader(*fields) #:nodoc:
-      fields.each do |f|
-        define_method f do
-          self[f.to_s]
+      fields.each do |field|
+        define_method field do
+          self[field.to_s]
         end
       end
     end
