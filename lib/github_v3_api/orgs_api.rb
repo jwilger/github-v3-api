@@ -40,6 +40,10 @@ class GitHubV3API
       GitHubV3API::Org.new_with_all_data(self, org_data)
     end
 
+    # Returns an array of GitHubV3API::Repo instances representing the repos
+    # that belong to the specified org.
+    #
+    # +org_login+:: the string ID of the organization, e.g. "github"
     def list_repos(org_login)
       @connection.get("/orgs/#{org_login}/repos").map do |repo_data|
         GitHubV3API::Repo.new(@connection.repos, repo_data)

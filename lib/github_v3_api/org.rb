@@ -8,6 +8,8 @@ class GitHubV3API
       :private_gists, :private_repos, :public_gists, :public_repos, :space,
       :total_private_repos, :type, :url
 
+    # Returns an array of GitHubV3API::Repo instances representing the repos
+    # that belong to this org
     def repos
       api.list_repos(login)
     end
