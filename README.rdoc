@@ -22,12 +22,6 @@ browser at http://localhost:4567 whereupon you will be prompted to authorize
 your app at GitHub. If you allow it, you will be presented with an access token
 that you can then copy and paste in where needed.
 
-*WARNING*:: Because getting Ruby's openssl library to verify certificates properly
-            on OSX is such a pain, this script disables certificate
-            verification. If someone knows of a good way to fix this in a way
-            that doesn't require every user on OSX to have fits, please, please
-            fix it and send me a pull request.
-
 == Contributing to github-v3-api
  
 * Check out the latest master to make sure the feature hasn't been implemented
