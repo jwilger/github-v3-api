@@ -1,4 +1,6 @@
 source "http://rubygems.org"
+gem 'rest-client', '~> 1.6.3'
+gem 'json', '~> 1.5.3'
 
 group :development do
   gem "rspec", "~> 2.3.0"
