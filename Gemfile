@@ -1,10 +1,5 @@
 source "http://rubygems.org"
-# Add dependencies required to use your gem here.
-# Example:
-#   gem "activesupport", ">= 2.3.5"
 
-# Add dependencies to develop your gem here.
-# Include everything needed to run rake, tests, features, etc.
 group :development do
   gem "rspec", "~> 2.3.0"
   gem "bundler", "~> 1.0.0"
@@ -12,4 +7,11 @@ group :development do
   gem "rcov", ">= 0"
   gem "reek", "~> 1.2.8"
   gem "roodi", "~> 2.1.0"
+end
+
+  # these are for the simple sinatra app that lets you get a GitHub access_token
+  # in order to test this library from IRB.
+group :sinatra do
+  gem "sinatra"
+  gem "omniauth"
 end
