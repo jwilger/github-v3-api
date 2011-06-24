@@ -22,4 +22,21 @@ describe GitHubV3API::OrgsAPI do
       api.get('octocat').should == :org
     end
   end
+
+  describe '#list_repos' do
+    it 'returns the public and private repos for the specified org' do
+      connection = mock(GitHubV3API, :repos => :repos_api)
+      connection.should_receive(:get) \
+        .with('/orgs/github/repos') \
+        .and_return([:repo1_hash, :repo2_hash])
+      GitHubV3API::Repo.should_receive(:new) \
+        .with(:repos_api, :repo1_hash) \
+        .and_return(:repo1)
+      GitHubV3API::Repo.should_receive(:new) \
+        .with(:repos_api, :repo2_hash) \
+        .and_return(:repo2)
+      api = GitHubV3API::OrgsAPI.new(connection)
+      api.list_repos('github').should == [:repo1, :repo2]
+    end
+  end
 end

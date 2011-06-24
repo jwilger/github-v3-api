@@ -35,4 +35,13 @@ describe GitHubV3API::Org do
       org['foo'].should be_nil
     end
   end
+
+  describe '#repos' do
+    it 'returns an array of Repo objects that belong to this org' do
+      api = mock(GitHubV3API::OrgsAPI)
+      api.should_receive(:list_repos).with('github').and_return([:repo1, :repo2])
+      org = GitHubV3API::Org.new_with_all_data(api, 'login' => 'github')
+      org.repos.should == [:repo1, :repo2]
+    end
+  end
 end

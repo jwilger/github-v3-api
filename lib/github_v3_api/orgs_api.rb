@@ -39,5 +39,11 @@ class GitHubV3API
       org_data = @connection.get("/orgs/#{org_login}")
       GitHubV3API::Org.new_with_all_data(self, org_data)
     end
+
+    def list_repos(org_login)
+      @connection.get("/orgs/#{org_login}/repos").map do |repo_data|
+        GitHubV3API::Repo.new(@connection.repos, repo_data)
+      end
+    end
   end
 end

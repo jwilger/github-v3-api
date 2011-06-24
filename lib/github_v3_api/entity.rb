@@ -49,5 +49,10 @@ class GitHubV3API
       @data = result.data
       @fetched = true
     end
+
+    # Provides access to the api object for subclasses
+    def api
+      @api
+    end
   end
 end
