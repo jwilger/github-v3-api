@@ -1,4 +1,6 @@
+# See GitHubV3API documentation in lib/github_v3_api.rb
 class GitHubV3API
+  # Represents a single GitHub Org and provides access to its data attributes.
   class Org
     def self.new_with_all_data(api, org_data) #:nodoc:
       org = self.allocate
@@ -6,6 +8,10 @@ class GitHubV3API
       org
     end
 
+    # +api+:: an instance of GitHubV3API::OrgsAPI
+    # +org_data+:: a Hash with keys corresponding to the org data supported by
+    #              GitHub
+    #
     def initialize(api, org_data)
       @api = api
       @org_data = org_data
