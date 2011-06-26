@@ -17,6 +17,9 @@ require 'github_v3_api/repo'
 #   #=> an instance of GitHubV3API::OrgsAPI
 #
 class GitHubV3API
+  # Raised when an API request returns a 404 error
+  NotFound = Class.new(RuntimeError)
+
   # Returns a GitHubV3API instance that is able to access github with the
   # +access_token+ owner's authorization.
   #
