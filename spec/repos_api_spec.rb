@@ -21,5 +21,13 @@ describe GitHubV3API::ReposAPI do
       GitHubV3API::Repo.should_receive(:new_with_all_data).with(api, :repo_hash).and_return(:repo)
       api.get('octocat', 'hello-world').should == :repo
     end
+
+    it 'raises GitHubV3API::NotFound instead of a RestClient::ResourceNotFound' do
+      connection = mock(GitHubV3API)
+      connection.should_receive(:get) \
+        .and_raise(RestClient::ResourceNotFound)
+      api = GitHubV3API::ReposAPI.new(connection)
+      lambda { api.get('octocat', 'hello-world') }.should raise_error(GitHubV3API::NotFound)
+    end
   end
 end
