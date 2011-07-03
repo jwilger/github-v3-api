@@ -9,18 +9,25 @@ credentials in the application itself.
 
 Because this library requires an OAuth2 access token from GitHub, you will need
 to obtain such a token in order to do command-line testing of the library via
-IRB. To that end, a template sinatra application is included in the source at
-<tt>get_access_token_sinatra_app.rb.template</tt>. You will need to copy that
-file to <tt>get_access_token_sinatra_app.rb</tt> (drop the .template) and
-replace YOUR_APP_ID and YOUR_APP_SECRET with the values for a GitHub application
-that you can create at https://github.com/account/applications/new (for the URL
-and Callback URL options, enter http://localhost:4567 and
-http://localhost:4567/auth/github/callback respectively.)
+IRB. The source for this gem includes a simple sinatra web application that can
+get an access token for you. You will need to create a GitHub application first
+by visiting https://github.com/account/applications/new.  For the URL and
+Callback URL options, enter http://localhost:4567 and
+http://localhost:4567/auth/github/callback respectively (include "http://" in
+front of both; RDoc formatting seems to strip that bit out of the rendered
+documentation.) After creating the
+application, your client ID and client secret will be displayed, and you will
+use those values to run the script.
 
-Then just run <tt>ruby get_access_token_sinatra_app.rb</tt> and point your web
-browser at http://localhost:4567 whereupon you will be prompted to authorize
-your app at GitHub. If you allow it, you will be presented with an access token
-that you can then copy and paste in where needed.
+Then just run:
+
+    OAUTH_GITHUB_CLIENT_ID={client_id} \
+    OAUTH_GITHUB_CLIENT_SECRET={client_secret} \
+    ./github-v3-api-get-token
+
+and point your web browser at http://localhost:4567. You will be prompted to
+authorize your app at GitHub. If you allow it, you will then be presented with
+an access token that you can then copy and paste in where needed.
 
 == Contributing to github-v3-api
  
@@ -41,4 +48,3 @@ that you can then copy and paste in where needed.
 
 Copyright (c) 2011 John Wilger. See LICENSE.txt for
 further details.
-

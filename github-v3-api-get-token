@@ -3,19 +3,10 @@
 puts <<EOF
 This script will start a sinatra web app on your machine that can log you in to
 GitHub and show you your access token. This access token can then be used with
-the GitHubV3API.
+the GitHubV3API. You will need to set the OAUTH_GITHUB_CLIENT_ID and
+OAUTH_GITHUB_CLIENT_SECRET environment variables. See the README for more
+information.
 
-Once the server has started, just browse to http://localhost:4567. You may be
-prompted to log in to GitHub and/or authorize the app.  After that, your access
-token will be displayed to you.
-
-You will need to create a GitHub Application in order to use this. Just go to
-https://github.com/account/applications/new and fill out the form. Pick any name
-you want, and use http://localhost:4567 and
-http://localhost:4567/auth/github/callback for the Main and Callback URLs,
-respectively. After creating the application, use the generated client id and
-client secret by running this script with the OAUTH_GITHUB_CLIENT_ID and
-OATH_GITHUB_CLIENT_SECRET environment variables set.
 EOF
 
 print "Ready to go? (y/N): "
