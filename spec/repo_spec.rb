@@ -8,7 +8,7 @@ describe GitHubV3API::Repo do
           organization owner parent private pushed_at size source url watchers)
       fields.each do |f|
         repo = GitHubV3API::Repo.new_with_all_data(stub('api'), {f.to_s => 'foo'})
-        repo.methods.should include(f)
+        repo.methods.should include(f.to_sym)
         repo.send(f).should == 'foo'
       end
     end

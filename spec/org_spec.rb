@@ -10,7 +10,7 @@ describe GitHubV3API::Org do
         total_private_repos type url)
       fields.each do |f|
         org = GitHubV3API::Org.new_with_all_data(stub('api'), {f.to_s => 'foo'})
-        org.methods.should include(f)
+        org.methods.should include(f.to_sym)
         org.send(f).should == 'foo'
       end
     end
