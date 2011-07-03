@@ -11,8 +11,8 @@ group :development do
   gem "roodi", "~> 2.1.0"
 end
 
-  # these are for the simple sinatra app that lets you get a GitHub access_token
-  # in order to test this library from IRB.
+# these are for the simple sinatra app that lets you get a GitHub access_token
+# in order to test this library from IRB.
 group :sinatra do
   gem "sinatra"
   gem "omniauth"
