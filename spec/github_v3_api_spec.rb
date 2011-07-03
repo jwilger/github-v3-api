@@ -33,5 +33,11 @@ describe GitHubV3API do
       api = GitHubV3API.new('abcde')
       api.get('/something').should == [{"foo" => "bar"}]
     end
+
+    it 'raises GitHubV3API::Unauthorized instead of RestClient::Unauthorized' do
+      RestClient.stub!(:get).and_raise(RestClient::Unauthorized)
+      api = GitHubV3API.new('abcde')
+      lambda { api.get('/something') }.should raise_error(GitHubV3API::Unauthorized)
+    end
   end
 end

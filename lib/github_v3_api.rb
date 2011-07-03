@@ -20,6 +20,9 @@ class GitHubV3API
   # Raised when an API request returns a 404 error
   NotFound = Class.new(RuntimeError)
 
+  # Raised when an API request uses an invalid access token
+  Unauthorized = Class.new(RuntimeError)
+
   # Returns a GitHubV3API instance that is able to access github with the
   # +access_token+ owner's authorization.
   #
@@ -49,5 +52,7 @@ class GitHubV3API
                             {:accept => :json,
                              :authorization => "token #{@access_token}"})
     JSON.parse(result)
+  rescue RestClient::Unauthorized
+    raise Unauthorized, "The access token is invalid according to GitHub"
   end
 end
