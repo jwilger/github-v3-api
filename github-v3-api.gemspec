@@ -5,13 +5,15 @@
 
 Gem::Specification.new do |s|
   s.name = %q{github-v3-api}
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["John Wilger"]
-  s.date = %q{2011-06-24}
+  s.date = %q{2011-07-03}
+  s.default_executable = %q{github-v3-api-get-token}
   s.description = %q{Ponies}
   s.email = %q{johnwilger@gmail.com}
+  s.executables = ["github-v3-api-get-token"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -26,7 +28,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "get_access_token_sinatra_app.rb.template",
+    "bin/github-v3-api-get-token",
     "github-v3-api.gemspec",
     "lib/github-v3-api.rb",
     "lib/github_v3_api.rb",
