@@ -15,9 +15,8 @@ by visiting https://github.com/account/applications/new.  For the URL and
 Callback URL options, enter http://localhost:4567 and
 http://localhost:4567/auth/github/callback respectively (include "http://" in
 front of both; RDoc formatting seems to strip that bit out of the rendered
-documentation.) After creating the
-application, your client ID and client secret will be displayed, and you will
-use those values to run the script.
+documentation.) After creating the application, your client ID and client secret
+will be displayed, and you will use those values to run the script.
 
 Then just run:
 
