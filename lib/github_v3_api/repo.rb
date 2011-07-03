@@ -7,6 +7,10 @@ class GitHubV3API
       :name, :open_issues, :organization, :owner, :parent, :private, :pushed_at,
       :size, :source, :url, :watchers
 
+    def owner_login
+      owner['login']
+    end
+
     private
 
     def natural_key

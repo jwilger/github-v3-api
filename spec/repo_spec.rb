@@ -32,4 +32,12 @@ describe GitHubV3API::Repo do
       repo['private'].should == true
     end
   end
+
+  describe '#owner_login' do
+    it 'returns the login name of the repo owner' do
+      api = stub(GitHubV3API::ReposAPI)
+      repo = GitHubV3API::Repo.new_with_all_data(api, 'owner' => {'login' => 'octocat'})
+      repo.owner_login.should == 'octocat'
+    end
+  end
 end
