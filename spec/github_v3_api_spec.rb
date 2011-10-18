@@ -22,7 +22,7 @@ describe GitHubV3API do
   describe '#get' do
     it 'does a get request to the specified path at the GitHub API server and adds the access token' do
       RestClient.should_receive(:get) \
-        .with('https://api.github.com/some/path', {:accept => :json, :authorization => 'token abcde'}) \
+        .with('https://api.github.com/some/path', {:accept => :json, :authorization => 'token abcde', :params => {}}) \
         .and_return('{}')
       api = GitHubV3API.new('abcde')
       api.get('/some/path')

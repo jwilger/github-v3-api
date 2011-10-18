@@ -47,10 +47,10 @@ class GitHubV3API
     ReposAPI.new(self)
   end
 
-  def get(path) #:nodoc:
+  def get(path, params={}) #:nodoc:
     result = RestClient.get("https://api.github.com" + path,
                             {:accept => :json,
-                             :authorization => "token #{@access_token}"})
+                             :authorization => "token #{@access_token}"}.merge({:params => params}))
     JSON.parse(result)
   rescue RestClient::Unauthorized
     raise Unauthorized, "The access token is invalid according to GitHub"
