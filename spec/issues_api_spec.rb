@@ -67,7 +67,7 @@ describe GitHubV3API::IssuesAPI do
     it 'returns a fully-hydrated Issue object for the specified user, repo, and issue that was updated' do
       connection = mock(GitHubV3API)
       data = {:body => "lol, wtf"}
-      connection.should_receive(:put).with('/repos/octocat/hello-world/issues/1234', data).and_return(:issue_hash)
+      connection.should_receive(:patch).with('/repos/octocat/hello-world/issues/1234', data).and_return(:issue_hash)
       api = GitHubV3API::IssuesAPI.new(connection)
       GitHubV3API::Issue.should_receive(:new_with_all_data).with(api, :issue_hash).and_return(:issue)
       api.update('octocat', 'hello-world', 1234, data).should == :issue
