@@ -1,6 +1,8 @@
 require 'rest-client'
 require 'json'
 require 'github_v3_api/entity'
+require 'github_v3_api/issues_api'
+require 'github_v3_api/issue'
 require 'github_v3_api/orgs_api'
 require 'github_v3_api/org'
 require 'github_v3_api/repos_api'
@@ -52,6 +54,14 @@ class GitHubV3API
                             {:accept => :json,
                              :authorization => "token #{@access_token}"}.merge({:params => params}))
     JSON.parse(result)
+  # Entry-point for access to the GitHub Issues API
+  #
+  # Returns an instance of GitHubV3API::IssuesAPI that will use the access_token
+  # associated with this instance
+  def issues
+    IssuesAPI.new(self)
+  end
+
   rescue RestClient::Unauthorized
     raise Unauthorized, "The access token is invalid according to GitHub"
   end

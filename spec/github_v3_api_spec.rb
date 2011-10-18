@@ -19,6 +19,13 @@ describe GitHubV3API do
     end
   end
 
+  describe "#issues" do
+    it "returns an instance of GitHubV3API::IssuesAPI" do
+      api = GitHubV3API.new('abcde')
+      api.issues.should be_kind_of GitHubV3API::IssuesAPI
+    end
+  end
+
   describe '#get' do
     it 'does a get request to the specified path at the GitHub API server and adds the access token' do
       RestClient.should_receive(:get) \
