@@ -10,7 +10,7 @@ class GitHubV3API
   #   repos = api.repos.list
   #   #=> returns an array of GitHubV3API::Repo instances
   #
-  #   repo = api.repo.get('octocat', 'hello-world')
+  #   repo = api.repos.get('octocat', 'hello-world')
   #   #=> returns an instance of GitHubV3API::Repo
   #
   #   repo.name
