@@ -49,11 +49,6 @@ class GitHubV3API
     ReposAPI.new(self)
   end
 
-  def get(path, params={}) #:nodoc:
-    result = RestClient.get("https://api.github.com" + path,
-                            {:accept => :json,
-                             :authorization => "token #{@access_token}"}.merge({:params => params}))
-    JSON.parse(result)
   # Entry-point for access to the GitHub Issues API
   #
   # Returns an instance of GitHubV3API::IssuesAPI that will use the access_token
@@ -62,6 +57,38 @@ class GitHubV3API
     IssuesAPI.new(self)
   end
 
+  def get(path, params={}) #:nodoc:
+    result = RestClient.get("https://api.github.com" + path,
+                            {:accept => :json,
+                             :authorization => "token #{@access_token}"}.merge({:params => params}))
+    JSON.parse(result)
+  rescue RestClient::Unauthorized
+    raise Unauthorized, "The access token is invalid according to GitHub"
+  end
+
+  def post(path, params={}) #:nodoc:
+    result = RestClient.post("https://api.github.com" + path, JSON.generate(params),
+                            {:accept => :json,
+                             :authorization => "token #{@access_token}"})
+    JSON.parse(result)
+  rescue RestClient::Unauthorized
+    raise Unauthorized, "The access token is invalid according to GitHub"
+  end
+
+  def patch(path, params={}) #:nodoc:
+    result = RestClient.post("https://api.github.com" + path, JSON.generate(params),
+                            {:accept => :json,
+                             :authorization => "token #{@access_token}"})
+    JSON.parse(result)
+  rescue RestClient::Unauthorized
+    raise Unauthorized, "The access token is invalid according to GitHub"
+  end
+
+  def delete(path) #:nodoc:
+    result = RestClient.delete("https://api.github.com" + path,
+                            {:accept => :json,
+                             :authorization => "token #{@access_token}"})
+    JSON.parse(result)
   rescue RestClient::Unauthorized
     raise Unauthorized, "The access token is invalid according to GitHub"
   end
