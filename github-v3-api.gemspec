@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{github-v3-api}
-  s.version = "0.0.5"
+  s.name = "github-v3-api"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["John Wilger"]
-  s.date = %q{2011-07-03}
-  s.description = %q{Ponies}
-  s.email = %q{johnwilger@gmail.com}
+  s.date = "2011-10-18"
+  s.description = "Ponies"
+  s.email = "johnwilger@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -46,11 +46,11 @@ Gem::Specification.new do |s|
     "spec/repos_api_spec.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/jwilger/github-v3-api}
+  s.homepage = "http://github.com/jwilger/github-v3-api"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
-  s.summary = %q{Ruby Client for the GitHub v3 API}
+  s.rubygems_version = "1.8.10"
+  s.summary = "Ruby Client for the GitHub v3 API"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
