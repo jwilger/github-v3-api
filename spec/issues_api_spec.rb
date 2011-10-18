@@ -44,4 +44,33 @@ describe GitHubV3API::IssuesAPI do
       lambda { api.get('octocat', 'hello-world', 4321) }.should raise_error(GitHubV3API::NotFound)
     end
   end
+
+  describe "#create" do
+    it 'returns a fully-hydrated Issue object for the specified user, repo, and issue that was created' do
+      connection = mock(GitHubV3API)
+      data = {:title => "omgbbq"}
+      connection.should_receive(:post).with('/repos/octocat/hello-world/issues', data).and_return(:issue_hash)
+      api = GitHubV3API::IssuesAPI.new(connection)
+      GitHubV3API::Issue.should_receive(:new_with_all_data).with(api, :issue_hash).and_return(:issue)
+      api.create('octocat', 'hello-world', data).should == :issue
+    end
+
+    it "raises GitHubV3API::MissingRequiredData when data[:title] is missing" do
+      connection = mock(GitHubV3API)
+      connection.should_not_receive(:post)
+      api = GitHubV3API::IssuesAPI.new(connection)
+      lambda { api.create('octocat', 'hello-world', {}) }.should raise_error(GitHubV3API::MissingRequiredData)
+    end
+  end
+
+  describe "#update" do
+    it 'returns a fully-hydrated Issue object for the specified user, repo, and issue that was updated' do
+      connection = mock(GitHubV3API)
+      data = {:body => "lol, wtf"}
+      connection.should_receive(:put).with('/repos/octocat/hello-world/issues/1234', data).and_return(:issue_hash)
+      api = GitHubV3API::IssuesAPI.new(connection)
+      GitHubV3API::Issue.should_receive(:new_with_all_data).with(api, :issue_hash).and_return(:issue)
+      api.update('octocat', 'hello-world', 1234, data).should == :issue
+    end
+  end
 end

@@ -54,5 +54,29 @@ class GitHubV3API
     rescue RestClient::ResourceNotFound
       raise NotFound, "The issue #{user}/#{repo_name}/issues/#{id} does not exist or is not visible to the user."
     end
+
+    # Returns a GitHubV3API::Issue instance representing the issue
+    # that it creates
+    #
+    # +user+:: the string ID of the user, e.g. "octocat"
+    # +repo_name+:: the string ID of the repository, e.g. "hello-world"
+    # +data+:: the hash DATA with attributes for the issue, e.g. {:title => "omgbbq"}
+    def create(user, repo_name, data={})
+      raise MissingRequiredData, "Title is required to create a new issue" unless data[:title]
+      issue_data = @connection.post("/repos/#{user}/#{repo_name}/issues", data)
+      GitHubV3API::Issue.new_with_all_data(self, issue_data)
+    end
+
+    # Returns a GitHubV3API::Issue instance representing the issue
+    # that it updated
+    #
+    # +user+:: the string ID of the user, e.g. "octocat"
+    # +repo_name+:: the string ID of the repository, e.g. "hello-world"
+    # +id+:: the integer ID of the issue, e.g. 42
+    # +data+:: the hash with attributes for the issue, e.g. {:body => "lol, wtf"}
+    def update(user, repo_name, id, data={})
+      issue_data = @connection.patch("/repos/#{user}/#{repo_name}/issues/#{id.to_s}", data)
+      GitHubV3API::Issue.new_with_all_data(self, issue_data)
+    end
   end
 end

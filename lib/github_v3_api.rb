@@ -25,6 +25,9 @@ class GitHubV3API
   # Raised when an API request uses an invalid access token
   Unauthorized = Class.new(RuntimeError)
 
+  # Raised when an API request is missing required data
+  MissingRequiredData = Class.new(RuntimeError)
+
   # Returns a GitHubV3API instance that is able to access github with the
   # +access_token+ owner's authorization.
   #
