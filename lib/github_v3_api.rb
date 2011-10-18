@@ -1,6 +1,8 @@
 require 'rest-client'
 require 'json'
 require 'github_v3_api/entity'
+require 'github_v3_api/issues_api'
+require 'github_v3_api/issue'
 require 'github_v3_api/orgs_api'
 require 'github_v3_api/org'
 require 'github_v3_api/repos_api'
@@ -22,6 +24,9 @@ class GitHubV3API
 
   # Raised when an API request uses an invalid access token
   Unauthorized = Class.new(RuntimeError)
+
+  # Raised when an API request is missing required data
+  MissingRequiredData = Class.new(RuntimeError)
 
   # Returns a GitHubV3API instance that is able to access github with the
   # +access_token+ owner's authorization.
@@ -47,8 +52,43 @@ class GitHubV3API
     ReposAPI.new(self)
   end
 
-  def get(path) #:nodoc:
+  # Entry-point for access to the GitHub Issues API
+  #
+  # Returns an instance of GitHubV3API::IssuesAPI that will use the access_token
+  # associated with this instance
+  def issues
+    IssuesAPI.new(self)
+  end
+
+  def get(path, params={}) #:nodoc:
     result = RestClient.get("https://api.github.com" + path,
+                            {:accept => :json,
+                             :authorization => "token #{@access_token}"}.merge({:params => params}))
+    JSON.parse(result)
+  rescue RestClient::Unauthorized
+    raise Unauthorized, "The access token is invalid according to GitHub"
+  end
+
+  def post(path, params={}) #:nodoc:
+    result = RestClient.post("https://api.github.com" + path, JSON.generate(params),
+                            {:accept => :json,
+                             :authorization => "token #{@access_token}"})
+    JSON.parse(result)
+  rescue RestClient::Unauthorized
+    raise Unauthorized, "The access token is invalid according to GitHub"
+  end
+
+  def patch(path, params={}) #:nodoc:
+    result = RestClient.post("https://api.github.com" + path, JSON.generate(params),
+                            {:accept => :json,
+                             :authorization => "token #{@access_token}"})
+    JSON.parse(result)
+  rescue RestClient::Unauthorized
+    raise Unauthorized, "The access token is invalid according to GitHub"
+  end
+
+  def delete(path) #:nodoc:
+    result = RestClient.delete("https://api.github.com" + path,
                             {:accept => :json,
                              :authorization => "token #{@access_token}"})
     JSON.parse(result)
