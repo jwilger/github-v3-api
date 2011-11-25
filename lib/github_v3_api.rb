@@ -3,6 +3,8 @@ require 'json'
 require 'github_v3_api/entity'
 require 'github_v3_api/issues_api'
 require 'github_v3_api/issue'
+require 'github_v3_api/users_api'
+require 'github_v3_api/user'
 require 'github_v3_api/orgs_api'
 require 'github_v3_api/org'
 require 'github_v3_api/repos_api'
@@ -34,6 +36,14 @@ class GitHubV3API
   # +access_token+:: an OAuth2 access token from GitHub
   def initialize(access_token)
     @access_token = access_token
+  end
+
+  # Entry-point for access to the GitHub Users API
+  #
+  # Returns an instance of GitHubV3API::UserAPI that will use the access_token
+  # associated with this instance.
+  def users
+    UsersAPI.new(self)
   end
 
   # Entry-point for access to the GitHub Orgs API
