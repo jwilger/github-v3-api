@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "github-v3-api"
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["John Wilger"]
-  s.date = "2011-10-18"
+  s.date = "2011-12-05"
   s.description = "Ponies"
   s.email = "johnwilger@gmail.com"
   s.extra_rdoc_files = [
@@ -46,7 +46,9 @@ Gem::Specification.new do |s|
     "spec/orgs_api_spec.rb",
     "spec/repo_spec.rb",
     "spec/repos_api_spec.rb",
-    "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+    "spec/user_api_spec.rb",
+    "spec/user_spec.rb"
   ]
   s.homepage = "http://github.com/jwilger/github-v3-api"
   s.licenses = ["MIT"]
