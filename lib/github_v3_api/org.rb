@@ -14,6 +14,12 @@ class GitHubV3API
       api.list_repos(login)
     end
 
+    # Returns an array of GitHubV3API::User instances representing the users
+    # who are members of the organization
+    def members
+      api.list_members(login)
+    end
+
     private 
 
     def natural_key
