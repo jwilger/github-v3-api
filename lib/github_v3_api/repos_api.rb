@@ -66,5 +66,16 @@ class GitHubV3API
       end
     end
 
+    # Returns an array of GitHubV3API::Repo instances containing the repositories
+    # which were forked from the repository specified by +user+ and +repo_name+.
+    #
+    # +user+:: the string ID of the user, e.g. "octocat"
+    # +repo_name+:: the string ID of the repository, e.g. "hello-world"
+    def list_forks(user, repo_name)
+      @connection.get("/repos/#{user}/#{repo_name}/forks").map do |repo_data|
+        GitHubV3API::Repo.new(@connection.repos, repo_data)
+      end
+    end
+
   end
 end
