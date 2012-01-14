@@ -11,11 +11,11 @@ class GitHubV3API
       owner['login']
     end
 
-    def collaborators
+    def list_collaborators
       api.list_collaborators(owner_login, name)
     end
 
-    def watchers
+    def list_watchers
       api.list_watchers(owner_login, name)
     end
 
