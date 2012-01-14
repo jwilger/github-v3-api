@@ -11,6 +11,10 @@ class GitHubV3API
       owner['login']
     end
 
+    def collaborators
+      api.list_collaborators(owner_login, name)
+    end
+
     private
 
     def natural_key

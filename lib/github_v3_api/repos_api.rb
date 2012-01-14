@@ -43,5 +43,16 @@ class GitHubV3API
     rescue RestClient::ResourceNotFound
       raise NotFound, "The repository #{user}/#{repo_name} does not exist or is not visible to the user."
     end
+
+    # Returns an array of GitHubV3API::User instances for the collaborators of the
+    # specified +user+ and +repo_name+.
+    #
+    # +user+:: the string ID of the user, e.g. "octocat"
+    # +repo_name+:: the string ID of the repository, e.g. "hello-world"
+    def list_collaborators(user, repo_name)
+      @connection.get("/repos/#{user}/#{repo_name}/collaborators").map do |user_data|
+        GitHubV3API::User.new(@connection.users, user_data)
+      end
+    end
   end
 end
