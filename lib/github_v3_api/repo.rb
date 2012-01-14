@@ -15,6 +15,10 @@ class GitHubV3API
       api.list_collaborators(owner_login, name)
     end
 
+    def watchers
+      api.list_watchers(owner_login, name)
+    end
+
     private
 
     def natural_key

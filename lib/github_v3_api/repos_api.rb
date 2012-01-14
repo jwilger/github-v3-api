@@ -54,5 +54,17 @@ class GitHubV3API
         GitHubV3API::User.new(@connection.users, user_data)
       end
     end
+
+    # Returns an array of GitHubV3API::User instances containing the users who are
+    # watching the repository specified by +user+ and +repo_name+.
+    #
+    # +user+:: the string ID of the user, e.g. "octocat"
+    # +repo_name+:: the string ID of the repository, e.g. "hello-world"
+    def list_watchers(user, repo_name)
+      @connection.get("/repos/#{user}/#{repo_name}/watchers").map do |user_data|
+        GitHubV3API::User.new(@connection.users, user_data)
+      end
+    end
+
   end
 end
