@@ -44,4 +44,25 @@ describe GitHubV3API::Org do
       org.repos.should == [:repo1, :repo2]
     end
   end
+
+  describe '#members'do
+    it 'returns an array of User objects who are members of this org' do
+      api = mock(GitHubV3API::OrgsAPI)
+      api.should_receive(:list_members).with('github').and_return([:user1, :user2])
+
+      org = GitHubV3API::Org.new_with_all_data(api, 'login' => 'github')
+      org.members.should == [:user1, :user2]
+    end
+  end
+
+  describe '#public_members'do
+    it 'returns an array of User objects who are public members of this org' do
+      api = mock(GitHubV3API::OrgsAPI)
+      api.should_receive(:list_public_members).with('github').and_return([:user1, :user2])
+
+      org = GitHubV3API::Org.new_with_all_data(api, 'login' => 'github')
+      org.public_members.should == [:user1, :user2]
+    end
+  end
+
 end
