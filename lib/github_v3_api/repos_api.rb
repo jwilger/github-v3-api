@@ -73,7 +73,7 @@ class GitHubV3API
     # +repo_name+:: the string ID of the repository, e.g. "hello-world"
     def list_forks(user, repo_name)
       @connection.get("/repos/#{user}/#{repo_name}/forks").map do |repo_data|
-        GitHubV3API::Repo.new(@connection.repos, repo_data)
+        GitHubV3API::Repo.new(self, repo_data)
       end
     end
 
