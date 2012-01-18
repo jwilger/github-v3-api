@@ -43,5 +43,39 @@ class GitHubV3API
     rescue RestClient::ResourceNotFound
       raise NotFound, "The repository #{user}/#{repo_name} does not exist or is not visible to the user."
     end
+
+    # Returns an array of GitHubV3API::User instances for the collaborators of the
+    # specified +user+ and +repo_name+.
+    #
+    # +user+:: the string ID of the user, e.g. "octocat"
+    # +repo_name+:: the string ID of the repository, e.g. "hello-world"
+    def list_collaborators(user, repo_name)
+      @connection.get("/repos/#{user}/#{repo_name}/collaborators").map do |user_data|
+        GitHubV3API::User.new(@connection.users, user_data)
+      end
+    end
+
+    # Returns an array of GitHubV3API::User instances containing the users who are
+    # watching the repository specified by +user+ and +repo_name+.
+    #
+    # +user+:: the string ID of the user, e.g. "octocat"
+    # +repo_name+:: the string ID of the repository, e.g. "hello-world"
+    def list_watchers(user, repo_name)
+      @connection.get("/repos/#{user}/#{repo_name}/watchers").map do |user_data|
+        GitHubV3API::User.new(@connection.users, user_data)
+      end
+    end
+
+    # Returns an array of GitHubV3API::Repo instances containing the repositories
+    # which were forked from the repository specified by +user+ and +repo_name+.
+    #
+    # +user+:: the string ID of the user, e.g. "octocat"
+    # +repo_name+:: the string ID of the repository, e.g. "hello-world"
+    def list_forks(user, repo_name)
+      @connection.get("/repos/#{user}/#{repo_name}/forks").map do |repo_data|
+        GitHubV3API::Repo.new(self, repo_data)
+      end
+    end
+
   end
 end

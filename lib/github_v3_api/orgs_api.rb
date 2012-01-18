@@ -49,5 +49,26 @@ class GitHubV3API
         GitHubV3API::Repo.new(@connection.repos, repo_data)
       end
     end
+
+    # Returns an array of GitHubV3API::User instances representing the members
+    # who belong to the specified organization.
+    #
+    # +org_login+:: the string ID of the organization, e.g. "github"
+    def list_members(org_login)
+      @connection.get("/orgs/#{org_login}/members").map do |user_data|
+        GitHubV3API::User.new(@connection.users, user_data)
+      end
+    end
+
+    # Returns an array of GitHubV3API::User instances representing the members
+    # who belong to the specified organization who have publicly identified
+    # themselves as members of this organization.
+    #
+    # +org_login+:: the string ID of the organization, e.g. "github"
+    def list_public_members(org_login)
+      @connection.get("/orgs/#{org_login}/public_members").map do |user_data|
+        GitHubV3API::User.new(@connection.users, user_data)
+      end
+    end
   end
 end

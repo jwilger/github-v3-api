@@ -11,6 +11,18 @@ class GitHubV3API
       owner['login']
     end
 
+    def list_collaborators
+      api.list_collaborators(owner_login, name)
+    end
+
+    def list_watchers
+      api.list_watchers(owner_login, name)
+    end
+
+    def list_forks
+      api.list_forks(owner_login, name)
+    end
+
     private
 
     def natural_key

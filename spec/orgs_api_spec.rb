@@ -39,4 +39,39 @@ describe GitHubV3API::OrgsAPI do
       api.list_repos('github').should == [:repo1, :repo2]
     end
   end
+
+  describe '#list_members' do
+    it 'returns the list of members for the specified org' do
+      connection = mock(GitHubV3API, :users => :users_api)
+      connection.should_receive(:get).once.with('/orgs/github/members') \
+        .and_return([:user_hash1, :user_hash2])
+
+      GitHubV3API::User.should_receive(:new).with(:users_api, :user_hash1) \
+        .and_return(:user1)
+
+      GitHubV3API::User.should_receive(:new).with(:users_api, :user_hash2) \
+        .and_return(:user2)
+
+      api = GitHubV3API::OrgsAPI.new(connection)
+      api.list_members('github').should == [:user1, :user2]
+    end
+  end
+
+  describe '#list_public_members' do
+    it 'returns the list of public members for the specified org' do
+      connection = mock(GitHubV3API, :users => :users_api)
+      connection.should_receive(:get).once.with('/orgs/github/public_members') \
+        .and_return([:user_hash1, :user_hash2])
+
+      GitHubV3API::User.should_receive(:new).with(:users_api, :user_hash1) \
+        .and_return(:user1)
+
+      GitHubV3API::User.should_receive(:new).with(:users_api, :user_hash2) \
+        .and_return(:user2)
+
+      api = GitHubV3API::OrgsAPI.new(connection)
+      api.list_public_members('github').should == [:user1, :user2]
+    end
+  end
+
 end
