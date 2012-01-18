@@ -30,4 +30,52 @@ describe GitHubV3API::ReposAPI do
       lambda { api.get('octocat', 'hello-world') }.should raise_error(GitHubV3API::NotFound)
     end
   end
+
+  describe "#list_collaborators" do
+    it 'returns a list of Users who are collaborating on the specified repo' do
+      connection = mock(GitHubV3API)
+      connection.should_receive(:get).with(
+        '/repos/octocat/hello-world/collaborators').and_return([:user_hash1, :user_hash2])
+      connection.should_receive(:users).twice.and_return(:users_api)
+      api = GitHubV3API::ReposAPI.new(connection)
+
+      GitHubV3API::User.should_receive(:new).with(:users_api, :user_hash1).and_return(:user1)
+      GitHubV3API::User.should_receive(:new).with(:users_api, :user_hash2).and_return(:user2)
+
+      collaborators = api.list_collaborators('octocat', 'hello-world')
+      collaborators.should == [:user1, :user2]
+    end
+  end
+
+  describe "#list_watchers" do
+    it 'returns a list of Users who are watching the specified repo' do
+      connection = mock(GitHubV3API)
+      connection.should_receive(:get).with(
+        '/repos/octocat/hello-world/watchers').and_return([:user_hash1, :user_hash2])
+      connection.should_receive(:users).twice.and_return(:users_api)
+      api = GitHubV3API::ReposAPI.new(connection)
+
+      GitHubV3API::User.should_receive(:new).with(:users_api, :user_hash1).and_return(:user1)
+      GitHubV3API::User.should_receive(:new).with(:users_api, :user_hash2).and_return(:user2)
+
+      watchers = api.list_watchers('octocat', 'hello-world')
+      watchers.should == [:user1, :user2]
+    end
+  end
+
+  describe "#list_forks" do
+    it 'returns a list of Repos which were forked from the specified repo' do
+      connection = mock(GitHubV3API)
+      connection.should_receive(:get).with(
+        '/repos/octocat/hello-world/forks').and_return([:repo_hash1, :repo_hash2])
+      api = GitHubV3API::ReposAPI.new(connection)
+
+      GitHubV3API::Repo.should_receive(:new).with(api, :repo_hash1).and_return(:fork1)
+      GitHubV3API::Repo.should_receive(:new).with(api, :repo_hash2).and_return(:fork2)
+
+      forks = api.list_forks('octocat', 'hello-world')
+      forks.should == [:fork1, :fork2]
+    end
+  end
+
 end

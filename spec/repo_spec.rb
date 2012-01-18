@@ -40,4 +40,41 @@ describe GitHubV3API::Repo do
       repo.owner_login.should == 'octocat'
     end
   end
+
+  describe '#list_collaborators' do
+    it 'returns an array of User objects who are collaborating on this repo' do
+      api = mock(GitHubV3API::ReposAPI)
+      api.should_receive(:list_collaborators).once.with(
+        'octocat', 'hello-world').and_return([:user1, :user2, :user3])
+
+      repo = GitHubV3API::Repo.new(api, 'name' => 'hello-world',
+                                   'owner' => {'login' => 'octocat'})
+      repo.list_collaborators.should == [:user1, :user2, :user3]
+    end
+  end
+
+  describe '#list_watchers' do
+    it 'returns an array of User objects who are watching this repo' do
+      api = mock(GitHubV3API::ReposAPI)
+      api.should_receive(:list_watchers).once.with(
+        'octocat', 'hello-world').and_return([:user1, :user2, :user3])
+
+      repo = GitHubV3API::Repo.new(api, 'name' => 'hello-world',
+                                   'owner' => {'login' => 'octocat'})
+      repo.list_watchers.should == [:user1, :user2, :user3]
+    end
+  end
+
+  describe '#list_forks' do
+    it 'returns an array of Repo objects which were forked from this repo' do
+      api = mock(GitHubV3API::ReposAPI)
+      api.should_receive(:list_forks).once.with(
+        'octocat', 'hello-world').and_return([:repo1, :repo2, :repo3])
+
+      repo = GitHubV3API::Repo.new(api, 'name' => 'hello-world',
+                                   'owner' => {'login' => 'octocat'})
+      repo.list_forks.should == [:repo1, :repo2, :repo3]
+    end
+  end
+
 end
