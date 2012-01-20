@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "github-v3-api"
-  s.version = "0.2.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["John Wilger"]
-  s.date = "2011-12-05"
+  s.date = "2012-01-20"
   s.description = "Ponies"
   s.email = "johnwilger@gmail.com"
   s.extra_rdoc_files = [
