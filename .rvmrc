@@ -1,2 +1,0 @@
-rvm use ruby-1.9.2-p180@github-v3-api --create --install
-bundle check
