@@ -74,7 +74,18 @@ class GitHubV3API
     result = RestClient.get("https://api.github.com" + path,
                             {:accept => :json,
                              :authorization => "token #{@access_token}"}.merge({:params => params}))
-    JSON.parse(result)
+    result_data = JSON.parse(result)
+    # check for pagination
+    link = result.headers[:link]
+    if link then
+      re_relnext = /<https:\/\/api.github.com([^>]*)>; *rel="next"/
+      relnext_path = link.match re_relnext
+      if relnext_path && relnext_path[1] then
+        next_data = self.get(relnext_path[1], params)
+        result_data += next_data
+      end
+    end
+    result_data
   rescue RestClient::Unauthorized
     raise Unauthorized, "The access token is invalid according to GitHub"
   end
