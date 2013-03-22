@@ -1,14 +1,14 @@
 source "http://rubygems.org"
-gem 'rest-client', '~> 1.6.3'
-gem 'json', '~> 1.5.3'
+gem 'rest-client'
+gem 'json'
 
 group :development do
-  gem "rspec", "~> 2.3.0"
-  gem "bundler", "~> 1.0.0"
-  gem "jeweler", "~> 1.6.0"
-  gem "rcov", ">= 0"
-  gem "reek", "~> 1.2.8"
-  gem "roodi", "~> 2.1.0"
+  gem "rspec"
+  gem "bundler"
+  gem "jeweler"
+  gem "simplecov"
+  gem "reek"
+  gem "roodi"
 end
 
 # these are for the simple sinatra app that lets you get a GitHub access_token
