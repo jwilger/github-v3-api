@@ -28,17 +28,39 @@ describe GitHubV3API do
 
   describe '#get' do
     it 'does a get request to the specified path at the GitHub API server and adds the access token' do
+      rcs = String.new('[]')
+      rcs.stub!(:headers).and_return({})
       RestClient.should_receive(:get) \
         .with('https://api.github.com/some/path', {:accept => :json, :authorization => 'token abcde', :params => {}}) \
-        .and_return('{}')
+        .and_return(rcs)
       api = GitHubV3API.new('abcde')
       api.get('/some/path')
     end
 
     it 'returns the result of parsing the result body as JSON' do
-      RestClient.stub!(:get => "[{\"foo\": \"bar\"}]")
+      rcs = String.new('[{"foo": "bar"}]')
+      rcs.stub!(:headers).and_return({})
+      RestClient.stub!(:get => rcs)
       api = GitHubV3API.new('abcde')
       api.get('/something').should == [{"foo" => "bar"}]
+    end
+
+    it "follows a pagination link from the http headers" do
+      headers_next = { :link => 'Link: <https://api.github.com/some/nextpath>; rel="next", <https://api.github.com/some/lastpath>; rel="last"' }
+      headers_last = { :link => 'Link: <https://api.github.com/some/prevpath>; rel="previous", <https://api.github.com/some/lastpath>; rel="last"' }
+      rcs_next = String.new('[]')
+      rcs_next.stub!(:headers).and_return(headers_next)
+      rcs_last = String.new('[]')
+      rcs_last.stub!(:headers).and_return(headers_last)
+
+      RestClient.should_receive(:get) \
+        .with('https://api.github.com/some/path',     {:accept => :json, :authorization => 'token abcde', :params => {}}) \
+        .and_return(rcs_next)
+      RestClient.should_receive(:get) \
+        .with('https://api.github.com/some/nextpath', {:accept => :json, :authorization => 'token abcde', :params => {}}) \
+        .and_return(rcs_last)
+      api = GitHubV3API.new('abcde')
+      api.get('/some/path')
     end
 
     it 'raises GitHubV3API::Unauthorized instead of RestClient::Unauthorized' do
