@@ -1,19 +1,4 @@
-source "http://rubygems.org"
-gem 'rest-client'
-gem 'json'
+source 'https://rubygems.org'
 
-group :development do
-  gem "rspec"
-  gem "bundler"
-  gem "jeweler"
-  gem "simplecov"
-  gem "reek"
-  gem "roodi"
-end
-
-# these are for the simple sinatra app that lets you get a GitHub access_token
-# in order to test this library from IRB.
-group :sinatra do
-  gem "sinatra"
-  gem "omniauth"
-end
+# Specify your gem's dependencies in github-v3-api.gemspec
+gemspec
