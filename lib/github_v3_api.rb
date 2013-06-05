@@ -34,8 +34,9 @@ class GitHubV3API
   # +access_token+ owner's authorization.
   #
   # +access_token+:: an OAuth2 access token from GitHub
-  def initialize(access_token)
+  def initialize(access_token, api_url='https://api.github.com')
     @access_token = access_token
+    @api_url = api_url
   end
 
   # Entry-point for access to the GitHub Users API
@@ -71,14 +72,14 @@ class GitHubV3API
   end
 
   def get(path, params={}) #:nodoc:
-    result = RestClient.get("https://api.github.com" + path,
+    result = RestClient.get(@api_url + path,
                             {:accept => :json,
                              :authorization => "token #{@access_token}"}.merge({:params => params}))
     result_data = JSON.parse(result)
     # check for pagination
     link = result.headers[:link]
     if link then
-      re_relnext = /<https:\/\/api.github.com([^>]*)>; *rel="next"/
+      re_relnext = %r!<#{@api_url}([^>]*)>; *rel="next"!
       relnext_path = link.match re_relnext
       if relnext_path && relnext_path[1] then
         next_data = self.get(relnext_path[1], params)
@@ -91,7 +92,7 @@ class GitHubV3API
   end
 
   def post(path, params={}) #:nodoc:
-    result = RestClient.post("https://api.github.com" + path, JSON.generate(params),
+    result = RestClient.post(@api_url + path, JSON.generate(params),
                             {:accept => :json,
                              :authorization => "token #{@access_token}"})
     JSON.parse(result)
@@ -100,7 +101,7 @@ class GitHubV3API
   end
 
   def patch(path, params={}) #:nodoc:
-    result = RestClient.post("https://api.github.com" + path, JSON.generate(params),
+    result = RestClient.post(@api_url + path, JSON.generate(params),
                             {:accept => :json,
                              :authorization => "token #{@access_token}"})
     JSON.parse(result)
@@ -109,7 +110,7 @@ class GitHubV3API
   end
 
   def delete(path) #:nodoc:
-    result = RestClient.delete("https://api.github.com" + path,
+    result = RestClient.delete(@api_url + path,
                             {:accept => :json,
                              :authorization => "token #{@access_token}"})
     JSON.parse(result)
