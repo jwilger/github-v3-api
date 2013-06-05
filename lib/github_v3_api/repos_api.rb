@@ -24,6 +24,13 @@ class GitHubV3API
       @connection = connection
     end
 
+    def public_repos
+      @connection.get('/repositories').map do |repo_data|
+        GitHubV3API::Repo.new(self, repo_data)
+      end
+    end
+    
+    
     # Returns an array of GitHubV3API::Repo instances representing the
     # user's public and private repos
     def list
