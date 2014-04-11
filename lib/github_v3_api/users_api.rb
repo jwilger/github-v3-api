@@ -35,6 +35,12 @@ class GitHubV3API
       user_data = @connection.get("/users/#{username}")
       GitHubV3API::User.new_with_all_data(self, user_data)
     end
-    
+
+    # Returns an array of all GitHubV3API::User instances in the server.
+    def all
+      @connection.get("/users").map do |user_data|
+        GitHubV3API::User.new_with_all_data(self, user_data)
+      end
+    end
   end
 end
