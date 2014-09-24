@@ -34,7 +34,7 @@ describe GitHubV3API do
   describe '#get' do
     it 'does a get request to the specified path at the GitHub API server and adds the access token' do
       rcs = String.new('[]')
-      rcs.stub!(:headers).and_return({})
+      allow(rcs).to receive(:headers) { {} }
       RestClient.should_receive(:get) \
         .with('https://api.github.com/some/path', test_header.merge({:params => {}})) \
         .and_return(rcs)
@@ -44,8 +44,8 @@ describe GitHubV3API do
 
     it 'returns the result of parsing the result body as JSON' do
       rcs = String.new('[{"foo": "bar"}]')
-      rcs.stub!(:headers).and_return({})
-      RestClient.stub!(:get => rcs)
+      allow(rcs).to receive(:headers) { {} }
+      allow(RestClient).to receive(:get) { rcs }
       api = GitHubV3API.new(auth_token)
       api.get('/something').should == [{"foo" => "bar"}]
     end
@@ -54,9 +54,9 @@ describe GitHubV3API do
       headers_next = { :link => 'Link: <https://api.github.com/some/nextpath>; rel="next", <https://api.github.com/some/lastpath>; rel="last"' }
       headers_last = { :link => 'Link: <https://api.github.com/some/prevpath>; rel="previous", <https://api.github.com/some/lastpath>; rel="last"' }
       rcs_next = String.new('[]')
-      rcs_next.stub!(:headers).and_return(headers_next)
+      allow(rcs_next).to receive(:headers) { headers_next }
       rcs_last = String.new('[]')
-      rcs_last.stub!(:headers).and_return(headers_last)
+      allow(rcs_last).to receive(:headers) { headers_last }
 
       RestClient.should_receive(:get) \
         .with('https://api.github.com/some/path', test_header.merge({:params => {}})) \
@@ -69,7 +69,7 @@ describe GitHubV3API do
     end
 
     it 'raises GitHubV3API::Unauthorized instead of RestClient::Unauthorized' do
-      RestClient.stub!(:get).and_raise(RestClient::Unauthorized)
+      allow(RestClient).to receive(:get) { raise(RestClient::Unauthorized) }
       api = GitHubV3API.new(auth_token)
       lambda { api.get('/something') }.should raise_error(GitHubV3API::Unauthorized)
     end

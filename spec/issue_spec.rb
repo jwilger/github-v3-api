@@ -6,7 +6,7 @@ describe GitHubV3API::Issue do
       fields = %w(url html_url number state title body user labels assignee
                   milestone comments pull_request closed_at created_at updated_at)
       fields.each do |f|
-        repo = GitHubV3API::Issue.new_with_all_data(stub('api'), {f.to_s => 'foo'})
+        repo = GitHubV3API::Issue.new_with_all_data(double('api'), {f.to_s => 'foo'})
         repo.methods.should include(f.to_sym)
         repo.send(f).should == 'foo'
       end
