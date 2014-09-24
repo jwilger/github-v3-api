@@ -1,27 +1,32 @@
 require 'spec_helper'
 
 describe GitHubV3API do
+  let(:auth_token)  { 'abcde' }
+  let(:test_header) { {:accept => :json,
+                       :authorization => "token #{auth_token}",
+                       :user_agent => 'rubygem-github-v3-api'} }
+
   it 'is initialized with an OAuth2 access token' do
-    lambda { GitHubV3API.new('abcde') }.should_not raise_error
+    lambda { GitHubV3API.new(auth_token) }.should_not raise_error
   end
 
   describe '#orgs' do
     it 'returns an instance of GitHubV3API::OrgsAPI' do
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       api.orgs.should be_kind_of GitHubV3API::OrgsAPI
     end
   end
 
   describe '#repos' do
     it 'returns an instance of GitHubV3API::ReposAPI' do
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       api.repos.should be_kind_of GitHubV3API::ReposAPI
     end
   end
 
   describe "#issues" do
     it "returns an instance of GitHubV3API::IssuesAPI" do
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       api.issues.should be_kind_of GitHubV3API::IssuesAPI
     end
   end
@@ -31,9 +36,9 @@ describe GitHubV3API do
       rcs = String.new('[]')
       rcs.stub!(:headers).and_return({})
       RestClient.should_receive(:get) \
-        .with('https://api.github.com/some/path', {:accept => :json, :authorization => 'token abcde', :params => {}}) \
+        .with('https://api.github.com/some/path', test_header.merge({:params => {}})) \
         .and_return(rcs)
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       api.get('/some/path')
     end
 
@@ -41,7 +46,7 @@ describe GitHubV3API do
       rcs = String.new('[{"foo": "bar"}]')
       rcs.stub!(:headers).and_return({})
       RestClient.stub!(:get => rcs)
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       api.get('/something').should == [{"foo" => "bar"}]
     end
 
@@ -54,18 +59,18 @@ describe GitHubV3API do
       rcs_last.stub!(:headers).and_return(headers_last)
 
       RestClient.should_receive(:get) \
-        .with('https://api.github.com/some/path',     {:accept => :json, :authorization => 'token abcde', :params => {}}) \
+        .with('https://api.github.com/some/path', test_header.merge({:params => {}})) \
         .and_return(rcs_next)
       RestClient.should_receive(:get) \
-        .with('https://api.github.com/some/nextpath', {:accept => :json, :authorization => 'token abcde', :params => {}}) \
+        .with('https://api.github.com/some/nextpath', test_header.merge({:params => {}})) \
         .and_return(rcs_last)
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       api.get('/some/path')
     end
 
     it 'raises GitHubV3API::Unauthorized instead of RestClient::Unauthorized' do
       RestClient.stub!(:get).and_raise(RestClient::Unauthorized)
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       lambda { api.get('/something') }.should raise_error(GitHubV3API::Unauthorized)
     end
   end
@@ -75,9 +80,9 @@ describe GitHubV3API do
       data = {:title => 'omgbbq'}
       json = JSON.generate(data)
       RestClient.should_receive(:post) \
-        .with('https://api.github.com/some/path', json, {:accept => :json, :authorization => 'token abcde'}) \
+        .with('https://api.github.com/some/path', json, test_header) \
         .and_return('{}')
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       api.post('/some/path', data)
     end
   end
@@ -87,9 +92,9 @@ describe GitHubV3API do
       data = {:title => 'omgbbq'}
       json = JSON.generate(data)
       RestClient.should_receive(:post) \
-        .with('https://api.github.com/some/path', json, {:accept => :json, :authorization => 'token abcde'}) \
+        .with('https://api.github.com/some/path', json, test_header) \
         .and_return('{}')
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       api.patch('/some/path', data)
     end
   end
@@ -97,9 +102,9 @@ describe GitHubV3API do
   describe "#delete" do
     it 'does a delete request to the specified path at the GitHub API server and adds the access token' do
       RestClient.should_receive(:delete) \
-        .with('https://api.github.com/some/path', {:accept => :json, :authorization => 'token abcde'}) \
+        .with('https://api.github.com/some/path',  test_header) \
         .and_return('{}')
-      api = GitHubV3API.new('abcde')
+      api = GitHubV3API.new(auth_token)
       api.delete('/some/path')
     end
   end

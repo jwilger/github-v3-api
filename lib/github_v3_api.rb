@@ -34,9 +34,13 @@ class GitHubV3API
   # +access_token+ owner's authorization.
   #
   # +access_token+:: an OAuth2 access token from GitHub
-  def initialize(access_token, api_url='https://api.github.com')
+  def initialize(access_token, api_url='https://api.github.com', header={})
     @access_token = access_token
     @api_url = api_url
+    @header = {:accept => :json,
+               :authorization => "token #{@access_token}",
+               :user_agent => "rubygem-github-v3-api"}
+    @header.merge!(header) if header.is_a?(Hash)
   end
 
   # Entry-point for access to the GitHub Users API
@@ -73,8 +77,7 @@ class GitHubV3API
 
   def get(path, params={}) #:nodoc:
     result = RestClient.get(@api_url + path,
-                            {:accept => :json,
-                             :authorization => "token #{@access_token}"}.merge({:params => params}))
+                            @header.merge({:params => params}))
     result_data = JSON.parse(result)
     # check for pagination
     link = result.headers[:link]
@@ -93,8 +96,7 @@ class GitHubV3API
 
   def post(path, params={}) #:nodoc:
     result = RestClient.post(@api_url + path, JSON.generate(params),
-                            {:accept => :json,
-                             :authorization => "token #{@access_token}"})
+                             @header)
     JSON.parse(result)
   rescue RestClient::Unauthorized
     raise Unauthorized, "The access token is invalid according to GitHub"
@@ -102,8 +104,7 @@ class GitHubV3API
 
   def patch(path, params={}) #:nodoc:
     result = RestClient.post(@api_url + path, JSON.generate(params),
-                            {:accept => :json,
-                             :authorization => "token #{@access_token}"})
+                             @header)
     JSON.parse(result)
   rescue RestClient::Unauthorized
     raise Unauthorized, "The access token is invalid according to GitHub"
@@ -111,8 +112,7 @@ class GitHubV3API
 
   def delete(path) #:nodoc:
     result = RestClient.delete(@api_url + path,
-                            {:accept => :json,
-                             :authorization => "token #{@access_token}"})
+                               @header)
     JSON.parse(result)
   rescue RestClient::Unauthorized
     raise Unauthorized, "The access token is invalid according to GitHub"
