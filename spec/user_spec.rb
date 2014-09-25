@@ -8,7 +8,7 @@ describe GitHubV3API::User do
                   html_url created_at type total_private_repos owned_private_repos 
                   private_gists disk_usage collaborators)
       fields.each do |f|
-        user = GitHubV3API::User.new_with_all_data(stub('api'), {f.to_s => 'foo'})
+        user = GitHubV3API::User.new_with_all_data(double('api'), {f.to_s => 'foo'})
         user.methods.should include(f.to_sym)
         user.send(f).should == 'foo'
       end
@@ -17,7 +17,7 @@ describe GitHubV3API::User do
 
   describe '#[]' do
     it 'returns the user data for the specified key' do
-      api = mock(GitHubV3API::UsersAPI)
+      api = double(GitHubV3API::UsersAPI)
       api.should_receive(:get).with('github') \
         .and_return(GitHubV3API::User.new(api, 'login' => 'github', 'name' => 'GitHub'))
       user = GitHubV3API::User.new(api, 'login' => 'github')
@@ -25,7 +25,7 @@ describe GitHubV3API::User do
     end
 
     it 'only fetches the data once' do
-      api = mock(GitHubV3API::UsersAPI)
+      api = double(GitHubV3API::UsersAPI)
       api.should_receive(:get).once.with('github') \
         .and_return(GitHubV3API::User.new(api, 'login' => 'github', 'name' => 'GitHub'))
       user = GitHubV3API::User.new(api, 'login' => 'github')

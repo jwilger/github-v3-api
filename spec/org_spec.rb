@@ -9,7 +9,7 @@ describe GitHubV3API::Org do
         private_gists private_repos public_gists public_repos space
         total_private_repos type url)
       fields.each do |f|
-        org = GitHubV3API::Org.new_with_all_data(stub('api'), {f.to_s => 'foo'})
+        org = GitHubV3API::Org.new_with_all_data(double('api'), {f.to_s => 'foo'})
         org.methods.should include(f.to_sym)
         org.send(f).should == 'foo'
       end
@@ -18,7 +18,7 @@ describe GitHubV3API::Org do
 
   describe '#[]' do
     it 'returns the org data for the specified key' do
-      api = mock(GitHubV3API::OrgsAPI)
+      api = double(GitHubV3API::OrgsAPI)
       api.should_receive(:get).with('github') \
         .and_return(GitHubV3API::Org.new(api, 'login' => 'github', 'company' => 'GitHub'))
       org = GitHubV3API::Org.new(api, 'login' => 'github')
@@ -26,7 +26,7 @@ describe GitHubV3API::Org do
     end
 
     it 'only fetches the data once' do
-      api = mock(GitHubV3API::OrgsAPI)
+      api = double(GitHubV3API::OrgsAPI)
       api.should_receive(:get).once.with('github') \
         .and_return(GitHubV3API::Org.new(api, 'login' => 'github', 'company' => 'GitHub'))
       org = GitHubV3API::Org.new(api, 'login' => 'github')
@@ -38,7 +38,7 @@ describe GitHubV3API::Org do
 
   describe '#repos' do
     it 'returns an array of Repo objects that belong to this org' do
-      api = mock(GitHubV3API::OrgsAPI)
+      api = double(GitHubV3API::OrgsAPI)
       api.should_receive(:list_repos).with('github').and_return([:repo1, :repo2])
       org = GitHubV3API::Org.new_with_all_data(api, 'login' => 'github')
       org.repos.should == [:repo1, :repo2]
@@ -47,7 +47,7 @@ describe GitHubV3API::Org do
 
   describe '#members'do
     it 'returns an array of User objects who are members of this org' do
-      api = mock(GitHubV3API::OrgsAPI)
+      api = double(GitHubV3API::OrgsAPI)
       api.should_receive(:list_members).with('github').and_return([:user1, :user2])
 
       org = GitHubV3API::Org.new_with_all_data(api, 'login' => 'github')
@@ -57,7 +57,7 @@ describe GitHubV3API::Org do
 
   describe '#public_members'do
     it 'returns an array of User objects who are public members of this org' do
-      api = mock(GitHubV3API::OrgsAPI)
+      api = double(GitHubV3API::OrgsAPI)
       api.should_receive(:list_public_members).with('github').and_return([:user1, :user2])
 
       org = GitHubV3API::Org.new_with_all_data(api, 'login' => 'github')
